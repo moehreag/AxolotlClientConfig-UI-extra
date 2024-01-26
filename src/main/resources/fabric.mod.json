@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "axolotlclientconfig",
+  "version": "${version}",
+  "name": "AxolotlClientConfig",
+  "description": "Config Mod for AxolotlClient",
+  "authors": [
+    "moehreag"
+  ],
+  "contact": {
+    "homepage": "https://axolotlclient.github.io/",
+    "sources": "https://github.com/AxolotlClient/AxolotlClient-config/"
+  },
+  "license": "LGPL-3.0-or-later",
+  "icon": "assets/axolotlclientconfig/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client-init": [
+      "io.github.axolotlclient.AxolotlClientConfig.impl.AxolotlClientConfigMod"
+    ],
+    "modmenu": [
+      "io.github.axolotlclient.AxolotlClientConfig.impl.util.AxolotlClientConfigModMenu"
+    ]
+  },
+  "mixins": [
+    "axolotlclientconfig.mixins.json"
+  ],
+  "custom": {
+    "modmenu:clientsideOnly": true
+  },
+  "accessWidener": "axolotlclientconfigui.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.14.0",
+    "minecraft": "*",
+    "osl-resource-loader": "*",
+    "osl-lifecycle-events": "*",
+    "osl-entrypoints": "*"
+  }
+}
