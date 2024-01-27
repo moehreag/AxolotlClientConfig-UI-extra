@@ -37,7 +37,7 @@ public class VanillaButtonWidget extends ButtonWidget {
 	protected void drawWidget(int mouseX, int mouseY, float delta) {
 
 		TextRenderer textRenderer = client.textRenderer;
-		DrawUtil.bindTexture(WIDGETS_LOCATION);
+		client.getTextureManager().bind(WIDGETS_LOCATION);
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int k = active ? (hovered ? 2 : 1) : 0;
 		GlStateManager.enableBlend();

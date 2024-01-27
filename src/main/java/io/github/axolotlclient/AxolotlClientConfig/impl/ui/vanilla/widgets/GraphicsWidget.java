@@ -38,7 +38,7 @@ public class GraphicsWidget extends VanillaButtonWidget {
 
 	@Override
 	public void onPress() {
-		Minecraft.INSTANCE
-			.openScreen(new GraphicsEditorScreen(Minecraft.INSTANCE.screen, option));
+		Minecraft.getInstance()
+			.openScreen(new GraphicsEditorScreen(Minecraft.getInstance().screen, option));
 	}
 }

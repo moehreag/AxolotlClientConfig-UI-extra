@@ -27,10 +27,8 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sound.instance.SimpleSoundInstance;
-import net.minecraft.client.sound.instance.SoundInstance;
-import net.minecraft.client.sound.system.SoundEngine;
-import net.minecraft.client.resource.Identifier;
 import net.minecraft.client.sound.system.SoundManager;
+import net.minecraft.resource.Identifier;
 
 public abstract class ClickableWidget extends DrawUtil implements Drawable, Element, Widget, Selectable {
 
@@ -54,7 +52,7 @@ public abstract class ClickableWidget extends DrawUtil implements Drawable, Elem
 		this.width = width;
 		this.height = height;
 		this.message = message;
-		client = Minecraft.INSTANCE;
+		client = Minecraft.getInstance();
 	}
 
 	@Override
@@ -84,7 +82,7 @@ public abstract class ClickableWidget extends DrawUtil implements Drawable, Elem
 			if (this.isValidClickButton(button)) {
 				boolean bl = this.clicked(mouseX, mouseY);
 				if (bl) {
-					this.playDownSound(Minecraft.INSTANCE.getSoundManager());
+					this.playDownSound(Minecraft.getInstance().getSoundManager());
 					this.onClick(mouseX, mouseY);
 					return true;
 				}

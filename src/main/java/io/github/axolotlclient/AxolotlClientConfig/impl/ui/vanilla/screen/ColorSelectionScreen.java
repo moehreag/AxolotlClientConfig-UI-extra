@@ -39,8 +39,8 @@ import io.github.axolotlclient.AxolotlClientConfig.impl.util.DrawUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.Window;
-import net.minecraft.client.resource.Identifier;
 import net.minecraft.client.resource.language.I18n;
+import net.minecraft.resource.Identifier;
 import org.lwjgl.opengl.GL11;
 
 public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientConfig.impl.ui.Screen {
@@ -124,8 +124,8 @@ public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientC
 		super.render(mouseX, mouseY, delta);
 		drawCenteredString(minecraft.textRenderer, title, width / 2, 20, Colors.text().toInt());
 
-		DrawUtil.bindTexture(texture);
-		DrawUtil.drawTexture((int) selectorX, (int) selectorY, 0, 0, selectorRadius * 2, selectorRadius * 2, selectorRadius*2, selectorRadius*2);
+		minecraft.getTextureManager().bind(texture);
+		drawTexture((int) selectorX, (int) selectorY, 0, 0, selectorRadius * 2, selectorRadius * 2, selectorRadius * 2, selectorRadius * 2);
 
 		DrawUtil.outlineRect((int) selectorX, (int) selectorY, selectorRadius * 2, selectorRadius * 2, Colors.BLACK.toInt());
 
@@ -182,14 +182,14 @@ public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientC
 	}
 
 	private int toGlCoordsX(double x) {
-		Window window = new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
+		Window window = new Window(Minecraft.getInstance(), Minecraft.getInstance().width, Minecraft.getInstance().height);
 		return (int) (x * window.getScale());
 	}
 
 	private int toGlCoordsY(double y) {
-		Window window = new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
+		Window window = new Window(Minecraft.getInstance(), Minecraft.getInstance().width, Minecraft.getInstance().height);
 		double scale = window.getScale();
-		return Math.round((float) (Minecraft.INSTANCE.height - y * scale - scale));
+		return Math.round((float) (Minecraft.getInstance().height - y * scale - scale));
 	}
 
 	@Override

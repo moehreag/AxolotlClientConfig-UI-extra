@@ -25,12 +25,10 @@ package io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets;
 import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.axolotlclient.AxolotlClientConfig.impl.options.NumberOption;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.DrawUtil;
-import io.github.axolotlclient.AxolotlClientConfig.impl.util.MathUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.TextRenderer;
-import net.minecraft.client.resource.Identifier;
-import net.minecraft.client.sound.instance.SimpleSoundInstance;
-import net.minecraft.client.sound.system.SoundEngine;
 import net.minecraft.client.sound.system.SoundManager;
+import net.minecraft.util.math.MathHelper;
 
 public class SliderWidget<O extends NumberOption<N>, N extends Number> extends VanillaButtonWidget {
 
@@ -48,7 +46,7 @@ public class SliderWidget<O extends NumberOption<N>, N extends Number> extends V
 	protected void drawWidget(int mouseX, int mouseY, float delta) {
 
 		TextRenderer textRenderer = client.textRenderer;
-		DrawUtil.bindTexture(WIDGETS_LOCATION);
+		client.getTextureManager().bind(WIDGETS_LOCATION);
 		GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.enableBlend();
 		GlStateManager.blendFuncSeparate(770, 771, 1, 0);
@@ -94,7 +92,7 @@ public class SliderWidget<O extends NumberOption<N>, N extends Number> extends V
 	@SuppressWarnings("unchecked")
 	private void setValue(double value) {
 		double d = this.value;
-		this.value = MathUtil.clamp(value, 0.0, 1.0);
+		this.value = MathHelper.clamp(value, 0.0, 1.0);
 		if (d != this.value) {
 			option.set((N) (Double) (option.getMin().doubleValue() +
 				(value * (option.getMax().doubleValue() - option.getMin().doubleValue()))));
@@ -119,6 +117,6 @@ public class SliderWidget<O extends NumberOption<N>, N extends Number> extends V
 
 	@Override
 	public void onRelease(double mouseX, double mouseY) {
-		client.getSoundManager().play(SimpleSoundInstance.of(new Identifier("gui.button.press"), 1.0F));
+		super.playDownSound(Minecraft.getInstance().getSoundManager());
 	}
 }

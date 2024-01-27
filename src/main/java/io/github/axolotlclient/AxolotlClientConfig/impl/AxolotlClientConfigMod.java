@@ -22,15 +22,13 @@
 
 package io.github.axolotlclient.AxolotlClientConfig.impl;
 
-import java.io.IOException;
-
 import io.github.axolotlclient.AxolotlClientConfig.api.util.WindowPropertiesProvider;
 import io.github.axolotlclient.AxolotlClientConfig.impl.ui.ConfigUIImpl;
 import io.github.axolotlclient.AxolotlClientConfig.impl.ui.NVGMC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.Window;
-import net.minecraft.client.resource.Identifier;
 import net.minecraft.client.resource.Resource;
+import net.minecraft.resource.Identifier;
 import net.ornithemc.osl.entrypoints.api.client.ClientModInitializer;
 import net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents;
 import net.ornithemc.osl.resource.loader.api.ResourceLoaderEvents;
@@ -43,17 +41,17 @@ public class AxolotlClientConfigMod implements ClientModInitializer {
 		NVGMC.setWindowPropertiesProvider(new WindowPropertiesProvider() {
 			@Override
 			public int getHeight() {
-				return Minecraft.INSTANCE.height;
+				return Minecraft.getInstance().height;
 			}
 
 			@Override
 			public int getWidth() {
-				return Minecraft.INSTANCE.width;
+				return Minecraft.getInstance().width;
 			}
 
 			@Override
 			public float getScaleFactor() {
-				return new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height).getScale();
+				return new Window(Minecraft.getInstance(), Minecraft.getInstance().width, Minecraft.getInstance().height).getScale();
 			}
 		});
 
@@ -65,6 +63,5 @@ public class AxolotlClientConfigMod implements ClientModInitializer {
 				});
 			ConfigUIImpl.getInstance().postReload();
 		});
-
 	}
 }

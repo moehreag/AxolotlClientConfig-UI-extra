@@ -44,7 +44,7 @@ public class ButtonListWidget extends ElementListWidget<ButtonListWidget.Entry> 
 	protected static int WIDGET_ROW_RIGHT = WIDGET_ROW_LEFT + WIDGET_WIDTH + 10;
 
 	public ButtonListWidget(ConfigManager manager, OptionCategory category, int screenWidth, int screenHeight, int top, int bottom, int entryHeight) {
-		super(Minecraft.INSTANCE, screenWidth, screenHeight, top, bottom, entryHeight);
+		super(Minecraft.getInstance(), screenWidth, screenHeight, top, bottom, entryHeight);
 		centerListVertically = false;
 
 		addEntries(manager, category);

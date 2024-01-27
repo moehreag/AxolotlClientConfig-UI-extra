@@ -73,7 +73,7 @@ public class GraphicsEditorScreen extends io.github.axolotlclient.AxolotlClientC
 
 		pixelSize = Math.min(maxGridHeight / gridRows, maxGridWidth / gridColumns);
 
-		gridX = (int) (new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height).getScaledWidth() / 2 - (gridColumns * pixelSize) / 2);
+		gridX = (int) (new Window(Minecraft.getInstance(), Minecraft.getInstance().width, Minecraft.getInstance().height).getScaledWidth() / 2 - (gridColumns * pixelSize) / 2);
 		maxGridWidth = Math.min(maxGridWidth, gridColumns * pixelSize);
 		maxGridHeight = Math.min(maxGridHeight, gridRows * pixelSize);
 

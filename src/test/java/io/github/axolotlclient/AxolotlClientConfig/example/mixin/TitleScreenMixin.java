@@ -25,7 +25,7 @@ public abstract class TitleScreenMixin extends Screen {
 	@Inject(method = "buttonClicked", at = @At("TAIL"))
 	private void onButtonClicked(ButtonWidget par1, CallbackInfo ci){
 		if (par1.id == 734){
-			Minecraft.INSTANCE.openScreen(getConfigScreenFactory("axolotlclientconfig-test").apply(Minecraft.INSTANCE.screen));
+			Minecraft.getInstance().openScreen(getConfigScreenFactory("axolotlclientconfig-test").apply(Minecraft.getInstance().screen));
 		}
 	}
 

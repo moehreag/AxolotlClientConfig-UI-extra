@@ -32,7 +32,7 @@ public class StringWidget extends TextFieldWidget {
 	private final StringOption option;
 
 	public StringWidget(int x, int y, int width, int height, StringOption option) {
-		super(Minecraft.INSTANCE.textRenderer, x, y, width, height, I18n.translate(option.getName()));
+		super(Minecraft.getInstance().textRenderer, x, y, width, height, I18n.translate(option.getName()));
 
 		setMaxLength(option.getMaxLength());
 		write(option.get());

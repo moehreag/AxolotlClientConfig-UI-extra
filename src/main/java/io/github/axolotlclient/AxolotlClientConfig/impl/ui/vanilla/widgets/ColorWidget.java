@@ -38,7 +38,7 @@ public class ColorWidget extends VanillaButtonWidget {
 
 	@Override
 	public void onPress() {
-		Minecraft.INSTANCE
-			.openScreen(new ColorSelectionScreen(Minecraft.INSTANCE.screen, option));
+		Minecraft.getInstance()
+			.openScreen(new ColorSelectionScreen(Minecraft.getInstance().screen, option));
 	}
 }

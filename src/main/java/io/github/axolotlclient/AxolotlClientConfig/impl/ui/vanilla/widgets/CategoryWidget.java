@@ -40,9 +40,9 @@ public class CategoryWidget extends VanillaButtonWidget {
 
 	@Override
 	public void onPress() {
-		if (Minecraft.INSTANCE.screen != null) {
-			Minecraft.INSTANCE.openScreen(
-				ConfigStyles.createScreen(Minecraft.INSTANCE.screen, category));
+		if (Minecraft.getInstance().screen != null) {
+			Minecraft.getInstance().openScreen(
+				ConfigStyles.createScreen(Minecraft.getInstance().screen, category));
 		}
 
 

@@ -12,10 +12,6 @@ base {
 version = "${project.version}+${project.minecraft_version}"
 group = project.maven_group
 
-loom {
-	accessWidenerPath.set(file("src/main/resources/axolotlclientconfigui.accesswidener"))
-}
-
 repositories {
 	maven {
 		url = "https://moehreag.duckdns.org/maven/releases"
@@ -42,7 +38,7 @@ dependencies {
 
 	api "io.github.axolotlclient.AxolotlClient-config:AxolotlClientConfig-common:${config_version}"
 
-	modImplementation("com.terraformersmc:modmenu:0.2.0+mc${minecraft_version}")
+	modImplementation("com.terraformersmc:modmenu:0.2.1+mc${minecraft_version}")
 }
 
 project.processResources {
@@ -78,7 +74,6 @@ jar {
 }
 
 runClient {
-	args("--userProperties", "{}")
 	classpath(sourceSets.test.runtimeClasspath)
 }
 

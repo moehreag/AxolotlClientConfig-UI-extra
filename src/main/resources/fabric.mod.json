@@ -28,12 +28,12 @@
   "custom": {
     "modmenu:clientsideOnly": true
   },
-  "accessWidener": "axolotlclientconfigui.accesswidener",
   "depends": {
     "fabricloader": ">=0.14.0",
-    "minecraft": "*",
+    "minecraft": "1.8.x",
     "osl-resource-loader": "*",
     "osl-lifecycle-events": "*",
+    "osl-keybinds": "*",
     "osl-entrypoints": "*"
   }
 }

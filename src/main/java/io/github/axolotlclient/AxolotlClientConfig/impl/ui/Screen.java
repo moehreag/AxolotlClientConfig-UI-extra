@@ -25,7 +25,6 @@ package io.github.axolotlclient.AxolotlClientConfig.impl.ui;
 import java.util.List;
 
 import com.google.common.collect.Lists;
-import io.github.axolotlclient.AxolotlClientConfig.impl.util.MathUtil;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.Nullable;
@@ -40,8 +39,6 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 	private final List<Selectable> selectables = Lists.newArrayList();
 	private Element focused;
 	private boolean dragging;
-	private int lastButton;
-	private long lastUpdateTime;
 	private int lastMouseDragPosX, lastMouseDragPosY = -1;
 
 	public Screen(String title) {
@@ -51,7 +48,7 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 	@Override
 	public void init(Minecraft minecraft, int i, int j) {
 		clearChildren();
-		this.minecraft = Minecraft.INSTANCE;
+		this.minecraft = Minecraft.getInstance();
 		super.init(minecraft, i, j);
 	}
 
@@ -70,24 +67,10 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 
 	@Override
 	public void handleMouse() {
-		int x = Mouse.getEventX() * this.width / this.minecraft.width;
-		int y = this.height - Mouse.getEventY() * this.height / this.minecraft.height - 1;
-		int button = Mouse.getEventButton();
-		if (Mouse.getEventButtonState()) {
-						this.lastButton = button;
-			this.lastUpdateTime = System.currentTimeMillis();
-			this.mouseClicked(x, y, this.lastButton);
-		} else if (button != -1) {
-
-			this.lastButton = -1;
-			this.mouseReleased(x, y, button);
-		} else if (this.lastButton != -1 && this.lastUpdateTime > 0L) {
-			long l = System.currentTimeMillis() - this.lastUpdateTime;
-			this.mouseDragged(x, y, this.lastButton, l);
-		}
+		super.handleMouse();
 		int scroll = Mouse.getDWheel();
 		if (scroll != 0) {
-			children.forEach(e -> e.mouseScrolled(x, y, 0, Math.signum(scroll)*2));
+			children.forEach(e -> e.mouseScrolled(minecraft.mouse.dx, minecraft.mouse.dy, 0, Math.signum(scroll)*2));
 		}
 	}
 
@@ -98,17 +81,15 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int button) {
-		dragging = true;
 		mouseClicked((double) mouseX, mouseY, button);
 	}
 
 	@Override
 	protected void mouseReleased(int mouseX, int mouseY, int button) {
 		mouseReleased((double) mouseX, mouseY, button);
-		dragging = false;
 	}
 
-
+	@Override
 	protected void mouseDragged(int mouseX, int mouseY, int button, long lastClick) {
 		if (lastMouseDragPosX == -1 || lastMouseDragPosY == -1) {
 			lastMouseDragPosX = mouseX;

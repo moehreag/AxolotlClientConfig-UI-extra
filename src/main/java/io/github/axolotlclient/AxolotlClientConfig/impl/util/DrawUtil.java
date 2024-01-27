@@ -22,10 +22,18 @@
 
 package io.github.axolotlclient.AxolotlClientConfig.impl.util;
 
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.vertex.BufferBuilder;
 import io.github.axolotlclient.AxolotlClientConfig.api.options.Option;
 import io.github.axolotlclient.AxolotlClientConfig.api.util.Color;
 import io.github.axolotlclient.AxolotlClientConfig.api.util.Rectangle;
@@ -37,13 +45,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.TextRenderer;
 import net.minecraft.client.render.Window;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.resource.Identifier;
+import net.minecraft.resource.Identifier;
 import org.lwjgl.opengl.GL11;
 
 public class DrawUtil extends GuiElement implements DrawingUtil {
 
 	private static final DrawUtil INSTANCE = new DrawUtil();
-	private static final Map<Identifier, Integer> textureCache = new HashMap<>();
 
 	private static final Stack<Rectangle> scissorStack = new Stack<>();
 
@@ -54,7 +61,7 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 	}
 
 	public static void fillRect(int x, int y, int width, int height, int color) {
-		INSTANCE.fill(x, y, x + width, y + height, color);
+		GuiElement.fill(x, y, x + width, y + height, color);
 	}
 
 	public static void outlineRect(Rectangle rectangle, Color color) {
@@ -86,16 +93,17 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 	}
 
 	public static void bindTexture(Identifier texture) {
-		Minecraft.INSTANCE.getTextureManager().bind(texture);
+		Minecraft.getInstance().getTextureManager().bind(texture);
 	}
 
 	/*public static int nvgCreateImage(long ctx, Identifier texture) {
 		return nvgCreateImage(ctx, texture, 0);
-	}*/
+	}
 
-	/*public static int nvgCreateImage(long ctx, Identifier texture, int imageFlags) {
+	public static int nvgCreateImage(long ctx, Identifier texture, int imageFlags) {
 		try {
-			ByteBuffer buffer = mallocAndRead(Minecraft.INSTANCE.texturePacks.selected.getResource(texture.toString()));
+			ByteBuffer buffer = mallocAndRead(Minecraft.getInstance().getResourceManager().getResource(texture)
+				.asStream());
 			int handle = NanoVG.nvgCreateImageMem(ctx, imageFlags, buffer);
 			MemoryUtil.memFree(buffer);
 			return handle;
@@ -134,7 +142,7 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 	private static void setScissor(Rectangle rect) {
 		if (rect != null) {
 			GL11.glEnable(GL11.GL_SCISSOR_TEST);
-			Window window = new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
+			Window window = new Window(Minecraft.getInstance(), Minecraft.getInstance().width, Minecraft.getInstance().height);
 			int scale = window.getScale();
 			GL11.glScissor(rect.x() * scale, (int) ((window.getScaledHeight() - rect.height() - rect.y()) * scale),
 				rect.width() * scale, rect.height() * scale);
@@ -148,7 +156,7 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 	}
 
 	public static void drawScrollingText(int left, int top, int right, int bottom, String text, Color color) {
-		drawScrollingText(Minecraft.INSTANCE.textRenderer, text, (left + right) / 2, left, top, right, bottom, color);
+		drawScrollingText(Minecraft.getInstance().textRenderer, text, (left + right) / 2, left, top, right, bottom, color);
 	}
 
 	public static void drawScrollingText(TextRenderer renderer, String text, int center, int left, int top, int right, int bottom, Color color) {
@@ -184,54 +192,64 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 
 	}
 
-	protected void renderTooltip(List<String> list, int mouseX, int mouseY) {
-		TextRenderer textRenderer = Minecraft.INSTANCE.textRenderer;
+	public void renderTooltip(List<String> list, int x, int y) {
 		if (!list.isEmpty()) {
-			GL11.glDisable(32826);
+			GlStateManager.disableRescaleNormal();
 			Lighting.turnOff();
-			GL11.glDisable(2896);
-			GL11.glDisable(2929);
-			int width = 0;
+			GlStateManager.disableLighting();
+			GlStateManager.disableDepthTest();
+			int k = 0;
 
-			for (String var7 : list) {
-				int var8 = textRenderer.getWidth(var7);
-				if (var8 > width) {
-					width = var8;
+			for (String string : list) {
+				int l = Minecraft.getInstance().textRenderer.getWidth(string);
+				if (l > k) {
+					k = l;
 				}
 			}
 
-			int x = mouseX + 12;
-			int y = mouseY - 12;
-			int height = 8;
+			int m = x + 12;
+			int n = y - 12;
+			int o = 8;
 			if (list.size() > 1) {
-				height += 2 + (list.size() - 1) * 10;
+				o += 2 + (list.size() - 1) * 10;
 			}
 
-			this.drawOffset = 300.0F;
-			int var10 = -267386864;
-			this.fillGradient(x - 3, y - 4, x + width + 3, y - 3, var10, var10);
-			this.fillGradient(x - 3, y + height + 3, x + width + 3, y + height + 4, var10, var10);
-			this.fillGradient(x - 3, y - 3, x + width + 3, y + height + 3, var10, var10);
-			this.fillGradient(x - 4, y - 3, x - 3, y + height + 3, var10, var10);
-			this.fillGradient(x + width + 3, y - 3, x + width + 4, y + height + 3, var10, var10);
-			int var11 = 1347420415;
-			int var12 = (var11 & 16711422) >> 1 | var11 & 0xFF000000;
-			this.fillGradient(x - 3, y - 3 + 1, x - 3 + 1, y + height + 3 - 1, var11, var12);
-			this.fillGradient(x + width + 2, y - 3 + 1, x + width + 3, y + height + 3 - 1, var11, var12);
-			this.fillGradient(x - 3, y - 3, x + width + 3, y - 3 + 1, var11, var11);
-			this.fillGradient(x - 3, y + height + 2, x + width + 3, y + height + 3, var12, var12);
+			if (m + k > Minecraft.getInstance().screen.width) {
+				m -= 28 + k;
+			}
 
-			for (int i = 0; i < list.size(); ++i) {
-				String line = list.get(i);
-				textRenderer.drawWithShadow(line, x, y, -1);
-				if (i == 0) {
-					y += 2;
+			if (n + o + 6 > Minecraft.getInstance().screen.height) {
+				n = Minecraft.getInstance().screen.height - o - 6;
+			}
+
+			drawOffset = 300.0F;
+			Minecraft.getInstance().getItemRenderer().zOffset = 300.0F;
+			int p = -267386864;
+			fillGradient(m - 3, n - 4, m + k + 3, n - 3, p, p);
+			fillGradient(m - 3, n + o + 3, m + k + 3, n + o + 4, p, p);
+			fillGradient(m - 3, n - 3, m + k + 3, n + o + 3, p, p);
+			fillGradient(m - 4, n - 3, m - 3, n + o + 3, p, p);
+			fillGradient(m + k + 3, n - 3, m + k + 4, n + o + 3, p, p);
+			int q = 1347420415;
+			int r = (q & 16711422) >> 1 | q & 0xFF000000;
+			fillGradient(m - 3, n - 3 + 1, m - 3 + 1, n + o + 3 - 1, q, r);
+			fillGradient(m + k + 2, n - 3 + 1, m + k + 3, n + o + 3 - 1, q, r);
+			fillGradient(m - 3, n - 3, m + k + 3, n - 3 + 1, q, q);
+			fillGradient(m - 3, n + o + 2, m + k + 3, n + o + 3, r, r);
+
+			for (int s = 0; s < list.size(); ++s) {
+				String string2 = list.get(s);
+				Minecraft.getInstance().textRenderer.drawWithShadow(string2, (float) m, (float) n, -1);
+				if (s == 0) {
+					n += 2;
 				}
 
-				y += 10;
+				n += 10;
 			}
 
 			drawOffset = 0.0F;
+			Minecraft.getInstance().getItemRenderer().zOffset = 0.0F;
+			GlStateManager.color3f(1, 1, 1);
 		}
 	}
 
@@ -242,21 +260,9 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 		}
 		String[] text = tooltip.split("<br>");
 		if (!text[0].isEmpty() || text.length > 1) {
-			Screen screen = Minecraft.INSTANCE.screen;
+			Screen screen = Minecraft.getInstance().screen;
 			INSTANCE.drawTooltip(ctx, font, text, x, y, screen.width, screen.height);
 		}
 
-	}
-
-	public static void drawTexture(int x, int y, float u, float v, int width, int height, float scaleU, float scaleV) {
-		float invertedScaleU = 1.0f / scaleU;
-		float invertedScaleV = 1.0f / scaleV;
-		BufferBuilder bufferBuilder = BufferBuilder.INSTANCE;
-		bufferBuilder.start();
-		bufferBuilder.vertex(x, y + height, 0.0, u * invertedScaleU, (v + (float) height) * invertedScaleV);
-		bufferBuilder.vertex(x + width, y + height, 0.0, (u + (float) width) * invertedScaleU, (v + (float) height) * invertedScaleV);
-		bufferBuilder.vertex(x + width, y, 0.0, (u + (float) width) * invertedScaleU, v * invertedScaleV);
-		bufferBuilder.vertex(x, y, 0.0, u * invertedScaleU, v * invertedScaleV);
-		bufferBuilder.end();
 	}
 }

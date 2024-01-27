@@ -27,9 +27,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import io.github.axolotlclient.AxolotlClientConfig.impl.util.KeyboardUtil;
-import io.github.axolotlclient.AxolotlClientConfig.impl.util.MathUtil;
-import io.github.axolotlclient.AxolotlClientConfig.impl.util.TextUtil;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -61,7 +58,7 @@ public class TextFieldWidget extends ClickableWidget {
 	protected String suggestion;
 	@Nullable
 	protected String hint;
-	protected long focusedTime = System.currentTimeMillis();
+	protected long focusedTime = Minecraft.getTime();
 	private int maxLength = 32;
 	private boolean focusUnlocked = true;
 	private boolean selecting;
@@ -117,7 +114,7 @@ public class TextFieldWidget extends ClickableWidget {
 		int i = Math.min(this.selectionStart, this.selectionEnd);
 		int j = Math.max(this.selectionStart, this.selectionEnd);
 		int k = this.maxLength - this.text.length() - (i - j);
-		String string = TextUtil.stripInvalidChars(text);
+		String string = SharedConstants.stripInvalidChars(text);
 		int l = string.length();
 		if (k < l) {
 			string = string.substring(0, k);
@@ -140,7 +137,7 @@ public class TextFieldWidget extends ClickableWidget {
 	}
 
 	private void erase(int offset) {
-		if (KeyboardUtil.isControlDown()) {
+		if (Screen.isControlDown()) {
 			this.eraseWords(offset);
 		} else {
 			this.eraseCharacters(offset);
@@ -243,7 +240,7 @@ public class TextFieldWidget extends ClickableWidget {
 	}
 
 	public void setSelectionStart(int cursor) {
-		this.selectionStart = MathUtil.clamp(cursor, 0, this.text.length());
+		this.selectionStart = MathHelper.clamp(cursor, 0, this.text.length());
 	}
 
 	public void setCursorToStart() {
@@ -259,22 +256,22 @@ public class TextFieldWidget extends ClickableWidget {
 		if (!this.isActive()) {
 			return false;
 		} else {
-			this.selecting = KeyboardUtil.isShiftDown();
-			if (KeyboardUtil.isSelectAll(keyCode)) {
+			this.selecting = Screen.isShiftDown();
+			if (Screen.isSelectAll(keyCode)) {
 				this.setCursorToEnd();
 				this.setSelectionEnd(0);
 				return true;
-			} else if (KeyboardUtil.isCopy(keyCode)) {
-				KeyboardUtil.setClipboard(getSelectedText());
+			} else if (Screen.isCopy(keyCode)) {
+				Screen.setClipboard(getSelectedText());
 				return true;
-			} else if (KeyboardUtil.isPaste(keyCode)) {
+			} else if (Screen.isPaste(keyCode)) {
 				if (this.editable) {
 					this.write(Screen.getClipboard());
 				}
 
 				return true;
-			} else if (KeyboardUtil.isCut(keyCode)) {
-				KeyboardUtil.setClipboard(this.getSelectedText());
+			} else if (Screen.isCut(keyCode)) {
+				Screen.setClipboard(this.getSelectedText());
 				if (this.editable) {
 					this.write("");
 				}
@@ -283,7 +280,7 @@ public class TextFieldWidget extends ClickableWidget {
 			} else {
 				switch (keyCode) {
 					case 14:
-						if (KeyboardUtil.isControlDown()) {
+						if (Screen.isControlDown()) {
 							if (this.editable) {
 								this.eraseWords(-1);
 							}
@@ -293,7 +290,7 @@ public class TextFieldWidget extends ClickableWidget {
 
 						return true;
 					case 199:
-						if (KeyboardUtil.isShiftDown()) {
+						if (Screen.isShiftDown()) {
 							this.setSelectionEnd(0);
 						} else {
 							this.setCursorToStart();
@@ -301,13 +298,13 @@ public class TextFieldWidget extends ClickableWidget {
 
 						return true;
 					case 203:
-						if (KeyboardUtil.isShiftDown()) {
-							if (KeyboardUtil.isControlDown()) {
+						if (Screen.isShiftDown()) {
+							if (Screen.isControlDown()) {
 								this.setSelectionEnd(this.getWordSkipPosition(-1, selectionEnd));
 							} else {
 								this.setSelectionEnd(this.selectionEnd - 1);
 							}
-						} else if (KeyboardUtil.isControlDown()) {
+						} else if (Screen.isControlDown()) {
 							this.setCursor(this.getWordSkipPosition(-1));
 						} else {
 							this.moveCursor(-1);
@@ -315,13 +312,13 @@ public class TextFieldWidget extends ClickableWidget {
 
 						return true;
 					case 205:
-						if (KeyboardUtil.isShiftDown()) {
-							if (KeyboardUtil.isControlDown()) {
+						if (Screen.isShiftDown()) {
+							if (Screen.isControlDown()) {
 								this.setSelectionEnd(this.getWordSkipPosition(1, selectionEnd));
 							} else {
 								this.setSelectionEnd(this.selectionEnd + 1);
 							}
-						} else if (KeyboardUtil.isControlDown()) {
+						} else if (Screen.isControlDown()) {
 							this.setCursor(this.getWordSkipPosition(1));
 						} else {
 							this.moveCursor(1);
@@ -329,7 +326,7 @@ public class TextFieldWidget extends ClickableWidget {
 
 						return true;
 					case 207:
-						if (KeyboardUtil.isShiftDown()) {
+						if (Screen.isShiftDown()) {
 							this.setSelectionEnd(this.text.length());
 						} else {
 							this.setCursorToEnd();
@@ -337,7 +334,7 @@ public class TextFieldWidget extends ClickableWidget {
 
 						return true;
 					case 211:
-						if (KeyboardUtil.isControlDown()) {
+						if (Screen.isControlDown()) {
 							if (this.editable) {
 								this.eraseWords(1);
 							}
@@ -361,7 +358,7 @@ public class TextFieldWidget extends ClickableWidget {
 	public boolean charTyped(char chr, int modifiers) {
 		if (!this.isActive()) {
 			return false;
-		} else if (TextUtil.isValidChatChar(chr)) {
+		} else if (SharedConstants.isValidChatChar(chr)) {
 			if (this.editable) {
 				this.write(Character.toString(chr));
 			}
@@ -484,7 +481,7 @@ public class TextFieldWidget extends ClickableWidget {
 		if (this.focusUnlocked || focused) {
 			super.setFocused(focused);
 			if (focused) {
-				this.focusedTime = System.currentTimeMillis();
+				this.focusedTime = Minecraft.getTime();
 			}
 		}
 	}
@@ -503,7 +500,7 @@ public class TextFieldWidget extends ClickableWidget {
 
 	public void setSelectionEnd(int index) {
 		int i = this.text.length();
-		this.selectionEnd = MathUtil.clamp(index, 0, i);
+		this.selectionEnd = MathHelper.clamp(index, 0, i);
 		if (this.textRenderer != null) {
 			if (this.firstCharacterIndex > i) {
 				this.firstCharacterIndex = i;
@@ -522,7 +519,7 @@ public class TextFieldWidget extends ClickableWidget {
 				this.firstCharacterIndex -= this.firstCharacterIndex - this.selectionEnd;
 			}
 
-			this.firstCharacterIndex = MathUtil.clamp(this.firstCharacterIndex, 0, i);
+			this.firstCharacterIndex = MathHelper.clamp(this.firstCharacterIndex, 0, i);
 		}
 	}
 
@@ -540,7 +537,7 @@ public class TextFieldWidget extends ClickableWidget {
 			int k = this.selectionEnd - this.firstCharacterIndex;
 			String string = this.textRenderer.trim(this.text.substring(this.firstCharacterIndex), this.getInnerWidth());
 			boolean bl = j >= 0 && j <= string.length();
-			boolean bl2 = this.isFocused() && (System.currentTimeMillis() - this.focusedTime) / 300L % 2L == 0L && bl;
+			boolean bl2 = this.isFocused() && (Minecraft.getTime() - this.focusedTime) / 300L % 2L == 0L && bl;
 			int l = this.drawsBackground ? this.getX() + 4 : this.getX();
 			int m = this.drawsBackground ? this.getY() + (this.getHeight() - 8) / 2 : this.getY();
 			int n = l;
@@ -550,8 +547,7 @@ public class TextFieldWidget extends ClickableWidget {
 
 			if (string.length() > 0) {
 				String string2 = bl ? string.substring(0, j) : string;
-				n = l+this.textRenderer.getWidth(string2);
-				this.textRenderer.drawWithShadow(string2, l, m, i);
+				n = this.textRenderer.drawWithShadow(string2, (float) l, (float) m, i);
 			}
 
 			boolean bl3 = this.selectionStart < this.text.length() || this.text.length() >= this.getMaxLength();
@@ -564,21 +560,20 @@ public class TextFieldWidget extends ClickableWidget {
 			}
 
 			if (string.length() > 0 && bl && j < string.length()) {
-				this.textRenderer.drawWithShadow(string.substring(j), n+1, m, i);
-				n = n+this.textRenderer.getWidth(string.substring(j))+1;
+				n = this.textRenderer.drawWithShadow(string.substring(j), (float) n, (float) m, i);
 			}
 
 			if (bl2) {
 				if (bl3) {
-					fill(o, m - 1, o + 1, m + 1 + TextUtil.FONT_HEIGHT, INSERT_CURSOR_COLOR);
+					fill(o, m - 1, o + 1, m + 1 + this.textRenderer.fontHeight, INSERT_CURSOR_COLOR);
 				} else {
-					this.textRenderer.drawWithShadow(UNDERSCORE, o, m, i);
+					this.textRenderer.drawWithShadow(UNDERSCORE, (float) o, (float) m, i);
 				}
 			}
 
 			if (k != j) {
 				int p = l + this.textRenderer.getWidth(string.substring(0, k));
-				this.drawSelectionHighlight(o, m - 1, p - 1, m + 1 + TextUtil.FONT_HEIGHT);
+				this.drawSelectionHighlight(o, m - 1, p - 1, m + 1 + this.textRenderer.fontHeight);
 			}
 		}
 	}
