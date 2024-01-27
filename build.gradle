@@ -26,10 +26,7 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.layered {
 		mappings "net.ornithemc:feather:${project.minecraft_version}+build.${project.feather_build}:v2"
-		addLayer ploceus.nestedMappings() // remove this line if not using nests
 	}
-	nests "net.ornithemc:nests:${project.minecraft_version}+build.${project.nests_build}"
-	// remove this line if not using nests
 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
@@ -38,7 +35,7 @@ dependencies {
 
 	api "io.github.axolotlclient.AxolotlClient-config:AxolotlClientConfig-common:${config_version}"
 
-	modImplementation("com.terraformersmc:modmenu:0.2.1+mc${minecraft_version}")
+	modImplementation("com.terraformersmc:modmenu:0.2.0+mc${minecraft_version}")
 }
 
 project.processResources {

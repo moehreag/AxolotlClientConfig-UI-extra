@@ -29,6 +29,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.sound.instance.SimpleSoundInstance;
 import net.minecraft.client.sound.system.SoundManager;
 import net.minecraft.resource.Identifier;
+import net.minecraft.sound.SoundEvents;
 
 public abstract class ClickableWidget extends DrawUtil implements Drawable, Element, Widget, Selectable {
 
@@ -144,7 +145,7 @@ public abstract class ClickableWidget extends DrawUtil implements Drawable, Elem
 	}
 
 	public void playDownSound(SoundManager soundManager) {
-		soundManager.play(SimpleSoundInstance.of(new Identifier("gui.button.press"), 1.0F));
+		soundManager.play(SimpleSoundInstance.of(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 	}
 
 	@Override

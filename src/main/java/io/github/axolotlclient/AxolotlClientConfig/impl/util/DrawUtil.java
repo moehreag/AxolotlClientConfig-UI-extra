@@ -92,11 +92,11 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 		}
 	}
 
-	public static void bindTexture(Identifier texture) {
+	/*public static void bindTexture(Identifier texture) {
 		Minecraft.getInstance().getTextureManager().bind(texture);
 	}
 
-	/*public static int nvgCreateImage(long ctx, Identifier texture) {
+	public static int nvgCreateImage(long ctx, Identifier texture) {
 		return nvgCreateImage(ctx, texture, 0);
 	}
 
@@ -142,7 +142,7 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 	private static void setScissor(Rectangle rect) {
 		if (rect != null) {
 			GL11.glEnable(GL11.GL_SCISSOR_TEST);
-			Window window = new Window(Minecraft.getInstance(), Minecraft.getInstance().width, Minecraft.getInstance().height);
+			Window window = new Window(Minecraft.getInstance());
 			int scale = window.getScale();
 			GL11.glScissor(rect.x() * scale, (int) ((window.getScaledHeight() - rect.height() - rect.y()) * scale),
 				rect.width() * scale, rect.height() * scale);

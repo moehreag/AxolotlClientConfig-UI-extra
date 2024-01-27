@@ -70,7 +70,7 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 		super.handleMouse();
 		int scroll = Mouse.getDWheel();
 		if (scroll != 0) {
-			children.forEach(e -> e.mouseScrolled(minecraft.mouse.dx, minecraft.mouse.dy, 0, Math.signum(scroll)*2));
+			children.forEach(e -> e.mouseScrolled(minecraft.mouse.dx, minecraft.mouse.dy, 0, Math.signum(scroll)));
 		}
 	}
 
