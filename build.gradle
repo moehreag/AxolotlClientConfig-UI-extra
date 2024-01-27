@@ -22,6 +22,7 @@ ploceus {
 }
 
 repositories {
+	mavenLocal()
 	maven {
 		url = "https://moehreag.duckdns.org/maven/releases"
 	}

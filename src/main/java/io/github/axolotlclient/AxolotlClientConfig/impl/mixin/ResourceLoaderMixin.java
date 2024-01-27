@@ -1,21 +1,13 @@
 package io.github.axolotlclient.AxolotlClientConfig.impl.mixin;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Path;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import io.github.axolotlclient.AxolotlClientConfig.api.ui.ConfigUI;
 import io.github.axolotlclient.AxolotlClientConfig.impl.ui.ConfigUIImpl;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resource.pack.BuiltInTexturePack;
-import net.minecraft.client.resource.pack.TexturePack;
+import io.github.axolotlclient.AxolotlClientConfig.impl.ui.StyleImpl;
 import net.minecraft.client.resource.pack.TexturePacks;
-import net.minecraft.resource.Identifier;
-import net.ornithemc.osl.resource.loader.api.ModTexturePack;
-import net.ornithemc.osl.resource.loader.impl.BuiltInModTexturePack;
-import net.ornithemc.osl.resource.loader.impl.ResourceLoader;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,23 +15,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(TexturePacks.class)
 public abstract class ResourceLoaderMixin {
 
-	@Shadow
-	public abstract List<?> getAvailable();
-
 	@Inject(method = "reload", at = @At("TAIL"))
-	private void onTextureReloadTail(CallbackInfo ci){
+	private void onTextureReloadTail(CallbackInfo ci) {
 		ConfigUIImpl.getInstance().preReload();
-		String path = new Identifier(ConfigUIImpl.getInstance().getUiJsonPath()).toString();
+		Map<String, String> vanillaWidgets = new HashMap<>();
+		vanillaWidgets.put("boolean", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.BooleanWidget");
+		vanillaWidgets.put("string", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.StringWidget");
+		vanillaWidgets.put("enum", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.EnumWidget");
+		vanillaWidgets.put("string[]", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.StringArrayWidget");
+		vanillaWidgets.put("color", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.ColorWidget");
+		vanillaWidgets.put("double", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.DoubleWidget");
+		vanillaWidgets.put("float", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.FloatWidget");
+		vanillaWidgets.put("integer", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.IntegerWidget");
+		vanillaWidgets.put("category", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.CategoryWidget");
+		vanillaWidgets.put("graphics", "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets.GraphicsWidget");
+		ConfigUI.getInstance().addStyle(new StyleImpl("vanilla", vanillaWidgets, "io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.screen.VanillaConfigScreen", null));
 
-		for (ModTexturePack pack : ResourceLoader.getDefaultModResourcePacks()){
-			try (InputStream in = pack.getResource(path)){
-				if (in != null){
-					ConfigUIImpl.getInstance().read(in);
-				}
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
 
 		ConfigUIImpl.getInstance().postReload();
 	}
