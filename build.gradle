@@ -42,7 +42,7 @@ dependencies {
 
 	api "io.github.axolotlclient.AxolotlClient-config:AxolotlClientConfig-common:${config_version}"
 
-	modImplementation("com.terraformersmc:modmenu:0.2.0+mc1.3.2")
+	modImplementation("com.terraformersmc:modmenu:0.2.0+mc${minecraft_version}")
 }
 
 project.processResources {

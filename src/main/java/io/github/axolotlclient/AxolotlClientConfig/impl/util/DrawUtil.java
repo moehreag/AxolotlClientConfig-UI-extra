@@ -24,7 +24,6 @@ package io.github.axolotlclient.AxolotlClientConfig.impl.util;
 
 import java.util.*;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import io.github.axolotlclient.AxolotlClientConfig.api.options.Option;
@@ -37,9 +36,8 @@ import net.minecraft.client.gui.GuiElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.TextRenderer;
 import net.minecraft.client.render.Window;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.resource.language.I18n;
 import net.minecraft.resource.Identifier;
-import net.minecraft.client.resource.language.I18n ;
 import org.lwjgl.opengl.GL11;
 
 public class DrawUtil extends GuiElement implements DrawingUtil {

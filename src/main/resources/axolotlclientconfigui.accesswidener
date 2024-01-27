@@ -1,2 +1,5 @@
 accessWidener v2 named
 accessible field net/minecraft/client/Minecraft INSTANCE Lnet/minecraft/client/Minecraft;
+
+accessible method net/minecraft/client/render/texture/TextureManager load (Ljava/lang/String;)I
+accessible method net/minecraft/client/render/texture/TextureManager bind (I)V
