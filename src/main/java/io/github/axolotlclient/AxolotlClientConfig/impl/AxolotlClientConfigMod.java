@@ -22,12 +22,18 @@
 
 package io.github.axolotlclient.AxolotlClientConfig.impl;
 
+import java.io.IOException;
+
 import io.github.axolotlclient.AxolotlClientConfig.api.util.WindowPropertiesProvider;
+import io.github.axolotlclient.AxolotlClientConfig.impl.ui.ConfigUIImpl;
 import io.github.axolotlclient.AxolotlClientConfig.impl.ui.NVGMC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.Window;
+import net.minecraft.client.resource.Identifier;
+import net.minecraft.client.resource.Resource;
 import net.ornithemc.osl.entrypoints.api.client.ClientModInitializer;
 import net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents;
+import net.ornithemc.osl.resource.loader.api.ResourceLoaderEvents;
 
 public class AxolotlClientConfigMod implements ClientModInitializer {
 
@@ -49,6 +55,15 @@ public class AxolotlClientConfigMod implements ClientModInitializer {
 			public float getScaleFactor() {
 				return new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height).getScale();
 			}
+		});
+
+		ResourceLoaderEvents.END_RESOURCE_RELOAD.register(() -> {
+			ConfigUIImpl.getInstance().preReload();
+			Minecraft.getInstance().getResourceManager()
+				.getResources(new Identifier(ConfigUIImpl.getInstance().getUiJsonPath())).forEach(resource -> {
+					ConfigUIImpl.getInstance().read(((Resource)resource).asStream());
+				});
+			ConfigUIImpl.getInstance().postReload();
 		});
 
 	}

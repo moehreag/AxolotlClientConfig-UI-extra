@@ -39,7 +39,7 @@ import io.github.axolotlclient.AxolotlClientConfig.impl.util.DrawUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.Window;
-import net.minecraft.resource.Identifier;
+import net.minecraft.client.resource.Identifier;
 import net.minecraft.client.resource.language.I18n;
 import org.lwjgl.opengl.GL11;
 

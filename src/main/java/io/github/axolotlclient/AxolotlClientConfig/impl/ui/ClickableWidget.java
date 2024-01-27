@@ -27,11 +27,11 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.sound.system.SoundEngine;
-import net.minecraft.resource.Identifier;
+import net.minecraft.client.resource.Identifier;
 
 public abstract class ClickableWidget extends DrawUtil implements Drawable, Element, Widget, Selectable {
 
-	protected static final Identifier WIDGETS_LOCATION = new Identifier("/gui/gui.png");
+	protected static final Identifier WIDGETS_LOCATION = new Identifier("textures/gui/widgets.png");
 	public boolean active = true;
 	public boolean visible = true;
 	@Getter

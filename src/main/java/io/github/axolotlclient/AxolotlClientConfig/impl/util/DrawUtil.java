@@ -37,7 +37,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.TextRenderer;
 import net.minecraft.client.render.Window;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.resource.Identifier;
+import net.minecraft.client.resource.Identifier;
 import org.lwjgl.opengl.GL11;
 
 public class DrawUtil extends GuiElement implements DrawingUtil {
@@ -86,15 +86,7 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 	}
 
 	public static void bindTexture(Identifier texture) {
-		if (!textureCache.containsKey(texture)) {
-			textureCache.put(texture, Minecraft.INSTANCE.textureManager.load(texture.toString()));
-		} else {
-
-			int id = textureCache.get(texture);
-			Minecraft.INSTANCE.textureManager.bind(id);
-		}
-
-
+		Minecraft.INSTANCE.getTextureManager().bind(texture);
 	}
 
 	/*public static int nvgCreateImage(long ctx, Identifier texture) {

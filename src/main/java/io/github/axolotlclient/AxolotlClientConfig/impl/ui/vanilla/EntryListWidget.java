@@ -36,7 +36,8 @@ import io.github.axolotlclient.AxolotlClientConfig.impl.ui.*;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.DrawUtil;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.MathUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resource.Identifier;
+import net.minecraft.client.gui.GuiElement;
+import net.minecraft.client.resource.Identifier;
 import net.minecraft.util.math.MathHelper;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
@@ -212,7 +213,7 @@ public abstract class EntryListWidget<E extends EntryListWidget.Entry<E>> extend
 		BufferBuilder bufferBuilder = BufferBuilder.INSTANCE;
 		this.hoveredEntry = this.isMouseOver(mouseX, mouseY) ? this.getEntryAtPosition(mouseX, mouseY) : null;
 		if (this.renderBackground) {
-			DrawUtil.bindTexture(new Identifier("/gui/background.png"));
+			DrawUtil.bindTexture(GuiElement.BACKGROUND_LOCATION);
 			GlStateManager.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 			float f = 32.0f;
 			bufferBuilder.start(7);
@@ -237,7 +238,7 @@ public abstract class EntryListWidget<E extends EntryListWidget.Entry<E>> extend
 		this.renderList(mouseX, mouseY, delta);
 		DrawUtil.popScissor();
 		if (this.renderHorizontalShadows) {
-			DrawUtil.bindTexture(new Identifier("/gui/background.png"));
+			DrawUtil.bindTexture(GuiElement.BACKGROUND_LOCATION);
 			GlStateManager.enableDepthTest();
 			GlStateManager.depthFunc(519);
 			float g = 32.0f;
@@ -301,7 +302,7 @@ public abstract class EntryListWidget<E extends EntryListWidget.Entry<E>> extend
 
 
 			GlStateManager.disableTexture();
-			DrawUtil.bindTexture(new Identifier("/gui/background.png"));
+			DrawUtil.bindTexture(GuiElement.BACKGROUND_LOCATION);
 			bufferBuilder.start(7);
 			bufferBuilder.color(0, 0, 0, 255);
 			bufferBuilder.vertex(i, this.bottom, 0.0, 0.0F, 1.0F);
