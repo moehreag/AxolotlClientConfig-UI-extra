@@ -27,7 +27,10 @@ import io.github.axolotlclient.AxolotlClientConfig.impl.options.NumberOption;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.DrawUtil;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.MathUtil;
 import net.minecraft.client.render.TextRenderer;
+import net.minecraft.client.resource.Identifier;
+import net.minecraft.client.sound.instance.SimpleSoundInstance;
 import net.minecraft.client.sound.system.SoundEngine;
+import net.minecraft.client.sound.system.SoundManager;
 
 public class SliderWidget<O extends NumberOption<N>, N extends Number> extends VanillaButtonWidget {
 
@@ -111,11 +114,11 @@ public class SliderWidget<O extends NumberOption<N>, N extends Number> extends V
 	}
 
 	@Override
-	public void playDownSound(SoundEngine soundManager) {
+	public void playDownSound(SoundManager soundManager) {
 	}
 
 	@Override
 	public void onRelease(double mouseX, double mouseY) {
-		client.soundSystem.play("random.click", 1.0F, 1.0F);
+		client.getSoundManager().play(SimpleSoundInstance.of(new Identifier("gui.button.press"), 1.0F));
 	}
 }

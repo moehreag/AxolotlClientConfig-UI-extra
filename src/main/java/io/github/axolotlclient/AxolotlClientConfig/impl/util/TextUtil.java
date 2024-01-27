@@ -1,14 +1,14 @@
 package io.github.axolotlclient.AxolotlClientConfig.impl.util;
 
 import net.minecraft.SharedConstants;
-import org.apache.commons.lang3.ArrayUtils;
+import net.minecraft.client.Minecraft;
 
 public class TextUtil {
 
-	public static final int FONT_HEIGHT = 8;
+	public static final int FONT_HEIGHT = Minecraft.INSTANCE.textRenderer.fontHeight;
 
 	public static boolean isValidChatChar(char c){
-		return ArrayUtils.contains(SharedConstants.VALID_CHAT_CHARACTERS.toCharArray(), c);
+		return SharedConstants.isValidChatChar(c);
 	}
 
 	public static String stripInvalidChars(String input){

@@ -36,7 +36,7 @@ public class ResetButtonWidget extends VanillaButtonWidget {
 	public ResetButtonWidget(int x, int y, int width, int height, Option<?> option) {
 		super(x, y, width, height, I18n.translate("action.reset"), widget -> {
 			option.setDefault();
-			Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
+			Window window = new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
 			int i = (int) window.getScaledWidth();
 			int j = (int) window.getScaledHeight();
 			Screen current = (Screen) Minecraft.INSTANCE.screen;

@@ -36,6 +36,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.options.KeyBinding;
 import net.ornithemc.osl.entrypoints.api.client.ClientModInitializer;
+import net.ornithemc.osl.keybinds.api.KeyBindingEvents;
+import net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents;
 
 public class Example implements ClientModInitializer {
 
@@ -88,14 +90,14 @@ public class Example implements ClientModInitializer {
 		example.add(new GraphicsOption("graphics", 40, 40));
 		example.add(new EnumOption<>("enum", TestEnum.class, TestEnum.TEST_ENUM1));
 
-		KeyBinding binding = new KeyBinding("test", 0);
-		/*KeyBindingEvents.REGISTER_KEYBINDS.register((registry) -> registry.register(binding));
+		KeyBinding binding = new KeyBinding("test", 0, "test");
+		KeyBindingEvents.REGISTER_KEYBINDS.register((registry) -> registry.register(binding));
 		MinecraftClientEvents.TICK_END.register(client -> {
 			if (binding.consumeClick()) {
 				System.out.println("Opening Screen....");
 				Minecraft.getInstance().openScreen(getConfigScreenFactory(modid).apply(Minecraft.getInstance().screen));
 			}
-		});*/
+		});
 
 		AxolotlClientConfig.getInstance().register(new JsonConfigManager(FabricLoader.getInstance().getConfigDir().resolve(modid + ".json"), example));
 

@@ -26,8 +26,11 @@ import io.github.axolotlclient.AxolotlClientConfig.impl.util.DrawUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.sound.instance.SimpleSoundInstance;
+import net.minecraft.client.sound.instance.SoundInstance;
 import net.minecraft.client.sound.system.SoundEngine;
 import net.minecraft.client.resource.Identifier;
+import net.minecraft.client.sound.system.SoundManager;
 
 public abstract class ClickableWidget extends DrawUtil implements Drawable, Element, Widget, Selectable {
 
@@ -81,7 +84,7 @@ public abstract class ClickableWidget extends DrawUtil implements Drawable, Elem
 			if (this.isValidClickButton(button)) {
 				boolean bl = this.clicked(mouseX, mouseY);
 				if (bl) {
-					this.playDownSound(Minecraft.INSTANCE.soundSystem);
+					this.playDownSound(Minecraft.INSTANCE.getSoundManager());
 					this.onClick(mouseX, mouseY);
 					return true;
 				}
@@ -142,8 +145,8 @@ public abstract class ClickableWidget extends DrawUtil implements Drawable, Elem
 	protected void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
 	}
 
-	public void playDownSound(SoundEngine soundManager) {
-		client.soundSystem.play("random.click", 1.0F, 1.0F);
+	public void playDownSound(SoundManager soundManager) {
+		soundManager.play(SimpleSoundInstance.of(new Identifier("gui.button.press"), 1.0F));
 	}
 
 	@Override

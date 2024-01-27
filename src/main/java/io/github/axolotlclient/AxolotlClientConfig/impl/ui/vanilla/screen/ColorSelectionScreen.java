@@ -182,12 +182,12 @@ public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientC
 	}
 
 	private int toGlCoordsX(double x) {
-		Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
+		Window window = new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
 		return (int) (x * window.getScale());
 	}
 
 	private int toGlCoordsY(double y) {
-		Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
+		Window window = new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
 		double scale = window.getScale();
 		return Math.round((float) (Minecraft.INSTANCE.height - y * scale - scale));
 	}

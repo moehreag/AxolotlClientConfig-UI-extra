@@ -134,7 +134,7 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 	private static void setScissor(Rectangle rect) {
 		if (rect != null) {
 			GL11.glEnable(GL11.GL_SCISSOR_TEST);
-			Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
+			Window window = new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
 			int scale = window.getScale();
 			GL11.glScissor(rect.x() * scale, (int) ((window.getScaledHeight() - rect.height() - rect.y()) * scale),
 				rect.width() * scale, rect.height() * scale);

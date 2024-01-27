@@ -78,6 +78,7 @@ jar {
 }
 
 runClient {
+	args("--userProperties", "{}")
 	classpath(sourceSets.test.runtimeClasspath)
 }
 

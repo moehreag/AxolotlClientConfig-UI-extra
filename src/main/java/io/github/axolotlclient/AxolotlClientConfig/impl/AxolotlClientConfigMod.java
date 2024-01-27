@@ -53,7 +53,7 @@ public class AxolotlClientConfigMod implements ClientModInitializer {
 
 			@Override
 			public float getScaleFactor() {
-				return new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height).getScale();
+				return new Window(Minecraft.INSTANCE, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height).getScale();
 			}
 		});
 
