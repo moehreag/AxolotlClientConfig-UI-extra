@@ -26,7 +26,7 @@ import io.github.axolotlclient.AxolotlClientConfig.api.options.OptionCategory;
 import io.github.axolotlclient.AxolotlClientConfig.impl.options.OptionCategoryImpl;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.ConfigStyles;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resource.language.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 public class CategoryWidget extends VanillaButtonWidget {
 

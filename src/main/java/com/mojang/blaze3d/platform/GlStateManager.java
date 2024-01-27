@@ -75,4 +75,8 @@ public class GlStateManager {
 	public static void color3f(int r, int g, int b) {
 		GL11.glColor3f(r, g, b);
 	}
+
+	public static void enableAlphaTest() {
+		GL11.glEnable(GL11.GL_ALPHA_TEST);
+	}
 }

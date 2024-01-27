@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [],
   "client": [
-    "ResourceLoaderMixin",
-    "TextureManagerMixin"
+    "ResourceLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

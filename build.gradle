@@ -13,12 +13,7 @@ version = "${project.version}+${project.minecraft_version}"
 group = project.maven_group
 
 loom {
-	clientOnlyMinecraftJar()
 	accessWidenerPath.set(file("src/main/resources/axolotlclientconfigui.accesswidener"))
-}
-
-ploceus {
-	clientOnlyMappings()
 }
 
 repositories {
@@ -34,20 +29,20 @@ repositories {
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings loom.layered {
-		mappings "net.ornithemc:feather:${project.minecraft_version}-client+build.${project.feather_build}:v2"
+		mappings "net.ornithemc:feather:${project.minecraft_version}+build.${project.feather_build}:v2"
 		addLayer ploceus.nestedMappings() // remove this line if not using nests
 	}
-	nests "net.ornithemc:nests:${project.minecraft_version}-client+build.${project.nests_build}"
+	nests "net.ornithemc:nests:${project.minecraft_version}+build.${project.nests_build}"
 	// remove this line if not using nests
 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	ploceus.addCommonLibraries()
-	ploceus.dependOsl(osl_version, "client")
+	ploceus.dependOsl(osl_version)
 
 	api "io.github.axolotlclient.AxolotlClient-config:AxolotlClientConfig-common:${config_version}"
 
-	modImplementation("com.terraformersmc:modmenu:0.2.0+mcb1.7.3")
+	modImplementation("com.terraformersmc:modmenu:0.2.0+mc1.3.2")
 }
 
 project.processResources {

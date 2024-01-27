@@ -27,7 +27,7 @@ import io.github.axolotlclient.AxolotlClientConfig.api.options.Option;
 import io.github.axolotlclient.AxolotlClientConfig.impl.ui.Screen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.Window;
-import net.minecraft.resource.language.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 public class ResetButtonWidget extends VanillaButtonWidget {
 
@@ -37,8 +37,8 @@ public class ResetButtonWidget extends VanillaButtonWidget {
 		super(x, y, width, height, I18n.translate("action.reset"), widget -> {
 			option.setDefault();
 			Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
-			int i = (int) window.scaledWidth;
-			int j = (int) window.scaledHeight;
+			int i = (int) window.getScaledWidth();
+			int j = (int) window.getScaledHeight();
 			Screen current = (Screen) Minecraft.INSTANCE.screen;
 			if (current != null) {
 				AtomicDouble scroll = new AtomicDouble();

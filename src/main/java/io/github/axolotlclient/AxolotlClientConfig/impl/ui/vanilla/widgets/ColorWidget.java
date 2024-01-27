@@ -25,7 +25,7 @@ package io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.widgets;
 import io.github.axolotlclient.AxolotlClientConfig.impl.options.ColorOption;
 import io.github.axolotlclient.AxolotlClientConfig.impl.ui.vanilla.screen.ColorSelectionScreen;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resource.language.I18n;
+import net.minecraft.client.resource.language.I18n;
 
 public class ColorWidget extends VanillaButtonWidget {
 	private final ColorOption option;

@@ -40,7 +40,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.Window;
 import net.minecraft.resource.Identifier;
-import net.minecraft.resource.language.I18n;
+import net.minecraft.client.resource.language.I18n;
 import org.lwjgl.opengl.GL11;
 
 public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientConfig.impl.ui.Screen {
@@ -183,12 +183,12 @@ public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientC
 
 	private int toGlCoordsX(double x) {
 		Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
-		return (int) (x * window.scale);
+		return (int) (x * window.getScale());
 	}
 
 	private int toGlCoordsY(double y) {
 		Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
-		double scale = window.scale;
+		double scale = window.getScale();
 		return Math.round((float) (Minecraft.INSTANCE.height - y * scale - scale));
 	}
 

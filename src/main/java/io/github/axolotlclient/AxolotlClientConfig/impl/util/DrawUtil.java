@@ -37,9 +37,9 @@ import net.minecraft.client.gui.GuiElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.TextRenderer;
 import net.minecraft.client.render.Window;
-import net.minecraft.resource.language.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.resource.Identifier;
-import net.minecraft.resource.language.I18n;
+import net.minecraft.client.resource.language.I18n ;
 import org.lwjgl.opengl.GL11;
 
 public class DrawUtil extends GuiElement implements DrawingUtil {
@@ -145,8 +145,8 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 		if (rect != null) {
 			GL11.glEnable(GL11.GL_SCISSOR_TEST);
 			Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
-			int scale = window.scale;
-			GL11.glScissor(rect.x() * scale, (int) ((window.scaledHeight - rect.height() - rect.y()) * scale),
+			int scale = window.getScale();
+			GL11.glScissor(rect.x() * scale, (int) ((window.getScaledHeight() - rect.height() - rect.y()) * scale),
 				rect.width() * scale, rect.height() * scale);
 		} else {
 			GL11.glDisable(GL11.GL_SCISSOR_TEST);
@@ -194,62 +194,54 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 
 	}
 
-	public void renderTooltip(List<String> list, int x, int y) {
+	protected void renderTooltip(List<String> list, int mouseX, int mouseY) {
+		TextRenderer textRenderer = Minecraft.INSTANCE.textRenderer;
 		if (!list.isEmpty()) {
-			GlStateManager.disableRescaleNormal();
+			GL11.glDisable(32826);
 			Lighting.turnOff();
-			GlStateManager.disableLighting();
-			GlStateManager.disableDepthTest();
-			int k = 0;
+			GL11.glDisable(2896);
+			GL11.glDisable(2929);
+			int width = 0;
 
-			for (String string : list) {
-				int l = Minecraft.INSTANCE.textRenderer.getWidth(string);
-				if (l > k) {
-					k = l;
+			for (String var7 : list) {
+				int var8 = textRenderer.getWidth(var7);
+				if (var8 > width) {
+					width = var8;
 				}
 			}
 
-			int m = x + 12;
-			int n = y - 12;
-			int o = 8;
+			int x = mouseX + 12;
+			int y = mouseY - 12;
+			int height = 8;
 			if (list.size() > 1) {
-				o += 2 + (list.size() - 1) * 10;
+				height += 2 + (list.size() - 1) * 10;
 			}
 
-			if (m + k > Minecraft.INSTANCE.screen.width) {
-				m -= 28 + k;
-			}
+			this.drawOffset = 300.0F;
+			int var10 = -267386864;
+			this.fillGradient(x - 3, y - 4, x + width + 3, y - 3, var10, var10);
+			this.fillGradient(x - 3, y + height + 3, x + width + 3, y + height + 4, var10, var10);
+			this.fillGradient(x - 3, y - 3, x + width + 3, y + height + 3, var10, var10);
+			this.fillGradient(x - 4, y - 3, x - 3, y + height + 3, var10, var10);
+			this.fillGradient(x + width + 3, y - 3, x + width + 4, y + height + 3, var10, var10);
+			int var11 = 1347420415;
+			int var12 = (var11 & 16711422) >> 1 | var11 & 0xFF000000;
+			this.fillGradient(x - 3, y - 3 + 1, x - 3 + 1, y + height + 3 - 1, var11, var12);
+			this.fillGradient(x + width + 2, y - 3 + 1, x + width + 3, y + height + 3 - 1, var11, var12);
+			this.fillGradient(x - 3, y - 3, x + width + 3, y - 3 + 1, var11, var11);
+			this.fillGradient(x - 3, y + height + 2, x + width + 3, y + height + 3, var12, var12);
 
-			if (n + o + 6 > Minecraft.INSTANCE.screen.height) {
-				n = Minecraft.INSTANCE.screen.height - o - 6;
-			}
-
-			drawOffset = 300.0F;
-			int p = -267386864;
-			fillGradient(m - 3, n - 4, m + k + 3, n - 3, p, p);
-			fillGradient(m - 3, n + o + 3, m + k + 3, n + o + 4, p, p);
-			fillGradient(m - 3, n - 3, m + k + 3, n + o + 3, p, p);
-			fillGradient(m - 4, n - 3, m - 3, n + o + 3, p, p);
-			fillGradient(m + k + 3, n - 3, m + k + 4, n + o + 3, p, p);
-			int q = 1347420415;
-			int r = (q & 16711422) >> 1 | q & 0xFF000000;
-			fillGradient(m - 3, n - 3 + 1, m - 3 + 1, n + o + 3 - 1, q, r);
-			fillGradient(m + k + 2, n - 3 + 1, m + k + 3, n + o + 3 - 1, q, r);
-			fillGradient(m - 3, n - 3, m + k + 3, n - 3 + 1, q, q);
-			fillGradient(m - 3, n + o + 2, m + k + 3, n + o + 3, r, r);
-
-			for (int s = 0; s < list.size(); ++s) {
-				String string2 = list.get(s);
-				Minecraft.INSTANCE.textRenderer.drawWithShadow(string2, m, n, -1);
-				if (s == 0) {
-					n += 2;
+			for (int i = 0; i < list.size(); ++i) {
+				String line = list.get(i);
+				textRenderer.drawWithShadow(line, x, y, -1);
+				if (i == 0) {
+					y += 2;
 				}
 
-				n += 10;
+				y += 10;
 			}
 
 			drawOffset = 0.0F;
-			GlStateManager.color3f(1, 1, 1);
 		}
 	}
 

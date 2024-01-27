@@ -27,13 +27,13 @@ import io.github.axolotlclient.AxolotlClientConfig.impl.ui.NVGMC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.Window;
 import net.ornithemc.osl.entrypoints.api.client.ClientModInitializer;
-import net.ornithemc.osl.lifecycle.api.MinecraftEvents;
+import net.ornithemc.osl.lifecycle.api.client.MinecraftClientEvents;
 
 public class AxolotlClientConfigMod implements ClientModInitializer {
 
 	@Override
 	public void initClient() {
-		MinecraftEvents.TICK_END.register(client -> AxolotlClientConfigImpl.getInstance().runTick());
+		MinecraftClientEvents.TICK_END.register(client -> AxolotlClientConfigImpl.getInstance().runTick());
 		NVGMC.setWindowPropertiesProvider(new WindowPropertiesProvider() {
 			@Override
 			public int getHeight() {
@@ -47,8 +47,9 @@ public class AxolotlClientConfigMod implements ClientModInitializer {
 
 			@Override
 			public float getScaleFactor() {
-				return new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height).scale;
+				return new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height).getScale();
 			}
 		});
+
 	}
 }
