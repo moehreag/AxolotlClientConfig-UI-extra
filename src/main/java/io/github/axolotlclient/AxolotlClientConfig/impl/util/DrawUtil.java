@@ -37,7 +37,6 @@ import net.minecraft.client.gui.GuiElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.TextRenderer;
 import net.minecraft.client.render.Window;
-import net.minecraft.resource.language.I18n;
 import net.minecraft.resource.Identifier;
 import net.minecraft.resource.language.I18n;
 import org.lwjgl.opengl.GL11;
@@ -133,7 +132,19 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 	}
 
 	public static void pushScissor(Rectangle rect) {
+		if (!scissorStack.isEmpty()) {
+			var last = scissorStack.peek();
+			rect = intersection(rect, last);
+		}
 		setScissor(scissorStack.push(rect));
+	}
+
+	private static Rectangle intersection(Rectangle a, Rectangle b) {
+		int x = Math.max(a.x(), b.x());
+		int y = Math.max(a.y(), b.y());
+		int right = Math.min(a.x() + a.width(), b.x() + b.width());
+		int bottom = Math.min(a.y() + a.height(), b.y() + b.height());
+		return x < right && y < bottom ? new Rectangle(x, y, right - x, bottom - y) : new Rectangle(0, 0, 0, 0);
 	}
 
 	public static void popScissor() {
@@ -193,7 +204,7 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 			text = Arrays.stream(text)
 				.flatMap((text1) -> renderer.split(text1, 170).stream())
 				.toArray(String[]::new);
-			INSTANCE.renderTooltip(Arrays.asList(text), x-2, y+12+3+10);
+			INSTANCE.renderTooltip(Arrays.asList(text), x - 2, y + 12 + 3 + 10);
 		}
 
 	}

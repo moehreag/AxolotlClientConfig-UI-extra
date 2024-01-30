@@ -30,8 +30,6 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.KeyboardUtil;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.MathUtil;
 import io.github.axolotlclient.AxolotlClientConfig.impl.util.TextUtil;
-import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.render.TextRenderer;
 import net.minecraft.util.math.MathHelper;
@@ -548,7 +546,7 @@ public class TextFieldWidget extends ClickableWidget {
 				k = string.length();
 			}
 
-			if (string.length() > 0) {
+			if (!string.isEmpty()) {
 				String string2 = bl ? string.substring(0, j) : string;
 				n = l+this.textRenderer.getWidth(string2);
 				this.textRenderer.drawWithShadow(string2, l, m, i);
@@ -563,9 +561,17 @@ public class TextFieldWidget extends ClickableWidget {
 				--n;
 			}
 
-			if (string.length() > 0 && bl && j < string.length()) {
+			if (!string.isEmpty() && bl && j < string.length()) {
 				this.textRenderer.drawWithShadow(string.substring(j), n+1, m, i);
 				n = n+this.textRenderer.getWidth(string.substring(j))+1;
+			}
+
+			if (this.hint != null && string.isEmpty() && !this.isFocused()) {
+				drawString(this.textRenderer, this.hint, n+1, m, i);
+			}
+
+			if (!bl3 && this.suggestion != null) {
+				drawString(this.textRenderer, this.suggestion, o - 1, m, -8355712);
 			}
 
 			if (bl2) {
