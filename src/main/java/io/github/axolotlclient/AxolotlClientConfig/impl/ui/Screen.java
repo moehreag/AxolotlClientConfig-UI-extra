@@ -85,7 +85,7 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 			long l = System.currentTimeMillis() - this.lastUpdateTime;
 			this.mouseDragged(x, y, this.lastButton, l);
 		}
-		int scroll = Mouse.getDWheel();
+		int scroll = Mouse.getEventDWheel();
 		if (scroll != 0) {
 			children.forEach(e -> e.mouseScrolled(x, y, 0, Math.signum(scroll)*2));
 		}
