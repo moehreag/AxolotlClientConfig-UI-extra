@@ -74,7 +74,7 @@ public class VanillaButtonListWidget extends ButtonListWidget {
 
 		public VanillaOptionEntry(ClickableWidget widget, Option<?> option) {
 			super(ImmutableList.of(widget,
-				new ResetButtonWidget(widget.getX() + widget.getWidth() - 40, 0, 40, widget.getHeight(), option)));
+				new ResetButtonWidget<>(widget.getX() + widget.getWidth() - 40, 0, 40, widget.getHeight(), option)));
 			widget.setWidth(widget.getWidth() - 42);
 			this.option = option;
 		}
