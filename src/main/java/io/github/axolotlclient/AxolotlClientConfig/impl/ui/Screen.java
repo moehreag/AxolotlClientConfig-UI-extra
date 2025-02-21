@@ -22,10 +22,9 @@
 
 package io.github.axolotlclient.AxolotlClientConfig.impl.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-import io.github.axolotlclient.AxolotlClientConfig.impl.util.MathUtil;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.Nullable;
@@ -35,9 +34,9 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 
 	@Getter
 	protected final String title;
-	private final List<Drawable> drawables = Lists.newArrayList();
-	private final List<Element> children = Lists.newArrayList();
-	private final List<Selectable> selectables = Lists.newArrayList();
+	private final List<Drawable> drawables = new ArrayList<>();
+	private final List<Element> children = new ArrayList<>();
+	private final List<Selectable> selectables = new ArrayList<>();
 	private Element focused;
 	private boolean dragging;
 	private int lastButton;
@@ -74,7 +73,7 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 		int y = this.height - Mouse.getEventY() * this.height / this.minecraft.height - 1;
 		int button = Mouse.getEventButton();
 		if (Mouse.getEventButtonState()) {
-						this.lastButton = button;
+			this.lastButton = button;
 			this.lastUpdateTime = System.currentTimeMillis();
 			this.mouseClicked(x, y, this.lastButton);
 		} else if (button != -1) {
@@ -87,7 +86,7 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 		}
 		int scroll = Mouse.getEventDWheel();
 		if (scroll != 0) {
-			children.forEach(e -> e.mouseScrolled(x, y, 0, Math.signum(scroll)*2));
+			children.forEach(e -> e.mouseScrolled(x, y, 0, Math.signum(scroll) * 2));
 		}
 	}
 
