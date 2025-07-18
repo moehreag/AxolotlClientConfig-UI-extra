@@ -47,9 +47,9 @@ public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientC
 	private final ColorOption option;
 	private final Identifier texture = new Identifier("axolotlclientconfig", "textures/gui/colorwheel.png");
 	private final Screen parent;
-	private BooleanOption chroma;
-	private FloatOption speed;
-	private IntegerOption alpha;
+	private final BooleanOption chroma;
+	private final FloatOption speed;
+	private final IntegerOption alpha;
 	private int selectorRadius;
 	private float selectorX;
 	private float selectorY;
@@ -59,13 +59,6 @@ public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientC
 		super(I18n.translate("select_color"));
 		this.option = option;
 		this.parent = parent;
-	}
-
-	@Override
-	public void init() {
-		super.init();
-		addDrawableChild(new VanillaButtonWidget(width / 2 - 75, height - 40, 150, 20,
-			I18n.translate("gui.back"), buttonWidget -> minecraft.openScreen(parent)));
 
 		chroma = new BooleanOption("option.chroma", option.getOriginal().isChroma(), val -> {
 			option.getOriginal().setChroma(val);
@@ -73,14 +66,21 @@ public class ColorSelectionScreen extends io.github.axolotlclient.AxolotlClientC
 		speed = new FloatOption("option.speed", option.getOriginal().getChromaSpeed(), val -> {
 			option.getOriginal().setChromaSpeed(val);
 		}, 0f, 4f);
-		alpha = new IntegerOption("option.alpha", option.get().getAlpha(), val -> {
+		alpha = new IntegerOption("option.alpha", option.getOriginal().getAlpha(), val -> {
 			option.getOriginal().setAlpha(val);
 			children().forEach(e -> {
 				if (e instanceof TextFieldWidget) {
-					((TextFieldWidget) e).setText(option.get().toString().split(";")[0]);
+					((TextFieldWidget) e).setText(option.getOriginal().toString().split(";")[0]);
 				}
 			});
 		}, 0, 255);
+	}
+
+	@Override
+	public void init() {
+		super.init();
+		addDrawableChild(new VanillaButtonWidget(width / 2 - 75, height - 40, 150, 20,
+			I18n.translate("gui.back"), buttonWidget -> minecraft.openScreen(parent)));
 
 		selectorRadius = Math.max(Math.min(width / 4 - 10, (height) / 2 - 60), 75);
 		selectorX = width / 4f - selectorRadius;

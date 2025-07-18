@@ -45,9 +45,13 @@ public class VanillaButtonListWidget extends ButtonListWidget {
 
 	@Override
 	protected void addOptions(ConfigManager manager, Collection<Option<?>> options) {
-		options.stream()
-			.filter(o -> !manager.getSuppressedNames().contains(o.getName()))
-			.forEach(o -> addEntry(o, null));
+		if (manager != null) {
+			options.stream()
+				.filter(o -> !manager.getSuppressedNames().contains(o.getName()))
+				.forEach(o -> addEntry(o, null));
+		} else {
+			options.forEach(o -> addEntry(o, null));
+		}
 	}
 
 	@Override
@@ -73,7 +77,7 @@ public class VanillaButtonListWidget extends ButtonListWidget {
 
 		public VanillaOptionEntry(ClickableWidget widget, Option<?> option) {
 			super(ImmutableList.of(widget,
-				new ResetButtonWidget(widget.getX() + widget.getWidth() - 40, 0, 40, widget.getHeight(), option)));
+				new ResetButtonWidget<>(widget.getX() + widget.getWidth() - 40, 0, 40, widget.getHeight(), option)));
 			widget.setWidth(widget.getWidth() - 42);
 			this.option = option;
 		}

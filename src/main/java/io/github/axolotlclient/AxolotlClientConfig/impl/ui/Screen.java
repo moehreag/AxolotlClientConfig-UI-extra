@@ -189,4 +189,9 @@ public abstract class Screen extends net.minecraft.client.gui.screen.Screen impl
 	@Override
 	public void tick() {
 	}
+
+	public void clearAndInit() {
+		clearChildren();
+		init(minecraft, width, height);
+	}
 }

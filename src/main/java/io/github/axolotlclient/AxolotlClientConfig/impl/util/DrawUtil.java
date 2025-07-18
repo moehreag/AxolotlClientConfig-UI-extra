@@ -189,6 +189,10 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 		}
 		String[] text = tooltip.split("<br>");
 		if (!text[0].isEmpty() || text.length > 1) {
+			TextRenderer renderer = Minecraft.INSTANCE.textRenderer;
+			text = Arrays.stream(text)
+				.flatMap((text1) -> renderer.split(text1, 170).stream())
+				.toArray(String[]::new);
 			INSTANCE.renderTooltip(Arrays.asList(text), x-2, y+12+3+10);
 		}
 
@@ -261,6 +265,9 @@ public class DrawUtil extends GuiElement implements DrawingUtil {
 		String[] text = tooltip.split("<br>");
 		if (!text[0].isEmpty() || text.length > 1) {
 			Screen screen = Minecraft.INSTANCE.screen;
+			text = Arrays.stream(text)
+				.flatMap((text1) -> Minecraft.INSTANCE.textRenderer.split(text1, 170).stream())
+				.toArray(String[]::new);
 			INSTANCE.drawTooltip(ctx, font, text, x, y, screen.width, screen.height);
 		}
 

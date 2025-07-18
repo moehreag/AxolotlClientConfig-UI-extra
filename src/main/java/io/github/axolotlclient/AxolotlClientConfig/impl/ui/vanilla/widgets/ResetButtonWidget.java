@@ -39,8 +39,7 @@ public class ResetButtonWidget<T> extends VanillaButtonWidget {
 			Window window = new Window(Minecraft.INSTANCE.options, Minecraft.INSTANCE.width, Minecraft.INSTANCE.height);
 			int i = (int) window.scaledWidth;
 			int j = (int) window.scaledHeight;
-			Screen current = (Screen) Minecraft.INSTANCE.screen;
-			if (current != null) {
+			if (Minecraft.INSTANCE.screen instanceof Screen current) {
 				AtomicDouble scroll = new AtomicDouble();
 				current.children().stream()
 					.filter(e -> e instanceof VanillaButtonListWidget)
